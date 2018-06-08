@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Link from 'gatsby-link'
 import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from 'draft-js';
+import { stateToHTML } from 'draft-js-export-html';
 import BlockStyleControls from '../components/blockStyleControls'
 import InlineStyleControls from '../components/inlineStylesControls'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -72,6 +73,11 @@ class IndexPage extends Component {
       )
     );
   }
+
+  // _getCurrentText() {
+  //   return stateToHTML(this.state.editorState.getCurrentContent());
+  // }
+
   render() {
     const { editorState } = this.state;
     // If the user changes block type before entering any text, we can
@@ -83,6 +89,7 @@ class IndexPage extends Component {
         className += ' RichEditor-hidePlaceholder';
       }
     }
+    // console.log(stateToHTML(this.state.editorState.getCurrentContent()));
     return (
       <div className="container-fluid">
         <div className="row">
@@ -110,7 +117,7 @@ class IndexPage extends Component {
             </div>
           </div>
           <div className="col-12 col-md-6">
-            lorsv-okokokk
+            <div dangerouslySetInnerHTML={{ __html: stateToHTML(this.state.editorState.getCurrentContent()) }} />
           </div>
         </div>
       </div>
