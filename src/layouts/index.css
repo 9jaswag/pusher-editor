@@ -689,3 +689,12 @@ pre tt:after {
 .RichEditor-activeButton {
   color: #5890ff;
 }
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 0.3rem solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.2em 0.5rem;
+  font-family: 'Hoefler Text', 'Georgia', serif;
+  font-style: italic;
+}

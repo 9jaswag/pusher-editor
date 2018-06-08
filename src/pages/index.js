@@ -74,10 +74,6 @@ class IndexPage extends Component {
     );
   }
 
-  // _getCurrentText() {
-  //   return stateToHTML(this.state.editorState.getCurrentContent());
-  // }
-
   render() {
     const { editorState } = this.state;
     // If the user changes block type before entering any text, we can
@@ -89,7 +85,7 @@ class IndexPage extends Component {
         className += ' RichEditor-hidePlaceholder';
       }
     }
-    // console.log(stateToHTML(this.state.editorState.getCurrentContent()));
+
     return (
       <div className="container-fluid">
         <div className="row">
