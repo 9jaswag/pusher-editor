@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Link from 'gatsby-link'
 import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import Pusher from 'pusher-js';
+import axios from 'axios'
 import BlockStyleControls from '../components/blockStyleControls'
 import InlineStyleControls from '../components/inlineStylesControls'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -26,6 +28,23 @@ class IndexPage extends Component {
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
     this.getBlockStyle = this._getBlockStyle.bind(this);
+  }
+
+  componentWillMount() {
+    // this.pusher = new Pusher('YOUR PUSHER APP ID', {
+    //   authEndpoint: 'YOUR AUTH SERVER ENDPOINT',
+    //   cluster: 'YOUR APP CLUSTER',
+    //   encrypted: true
+    // });
+
+    // this.post_channel = this.pusher.subscribe('editor');
+  }
+
+  componentDidMount() {
+    // this.post_channel.bind('editor', (text) => {
+    //   console.log(text)
+    //   this.setState({ editorText: text })
+    // });
   }
 
   _getBlockStyle(block) {
