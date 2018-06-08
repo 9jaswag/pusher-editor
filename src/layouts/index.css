@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Muli');
+
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5,6 +7,7 @@ html {
 }
 body {
   margin: 0;
+  font-family: 'Muli', sans-serif !important;
 }
 article,
 aside,
@@ -697,4 +700,6 @@ blockquote {
   padding: 0.2em 0.5rem;
   font-family: 'Hoefler Text', 'Georgia', serif;
   font-style: italic;
+  border-top-left-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
 }
