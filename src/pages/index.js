@@ -3,14 +3,7 @@ import Link from 'gatsby-link'
 import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from 'draft-js';
 import BlockStyleControls from '../components/blockStyleControls'
 import InlineStyleControls from '../components/inlineStylesControls'
-
-
-function getBlockStyle(block) {
-  switch (block.getType()) {
-    case 'blockquote': return 'RichEditor-blockquote';
-    default: return null;
-  }
-}
+import 'bootstrap/dist/css/bootstrap.css'
 
 const styleMap = {
   CODE: {
@@ -31,7 +24,16 @@ class IndexPage extends Component {
     this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+    this.getBlockStyle = this._getBlockStyle.bind(this);
   }
+
+  _getBlockStyle(block) {
+    switch (block.getType()) {
+      case 'blockquote': return 'RichEditor-blockquote';
+      default: return null;
+    }
+  }
+
   _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
@@ -82,27 +84,34 @@ class IndexPage extends Component {
       }
     }
     return (
-      <div className="RichEditor-root">
-        <BlockStyleControls
-          editorState={editorState}
-          onToggle={this.toggleBlockType}
-        />
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={this.toggleInlineStyle}
-        />
-        <div className={className} onClick={this.focus}>
-          <Editor
-            blockStyleFn={getBlockStyle}
-            customStyleMap={styleMap}
-            editorState={editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            keyBindingFn={this.mapKeyToEditorCommand}
-            onChange={this.onChange}
-            placeholder="Tell a story..."
-            ref="editor"
-            spellCheck={true}
-          />
+      <div className="container-fluid">
+        <div className="row">
+          <div className="RichEditor-root col-12 col-md-6">
+            <BlockStyleControls
+              editorState={editorState}
+              onToggle={this.toggleBlockType}
+            />
+            <InlineStyleControls
+              editorState={editorState}
+              onToggle={this.toggleInlineStyle}
+            />
+            <div className={className} onClick={this.focus}>
+              <Editor
+                blockStyleFn={this.getBlockStyle}
+                customStyleMap={styleMap}
+                editorState={editorState}
+                handleKeyCommand={this.handleKeyCommand}
+                keyBindingFn={this.mapKeyToEditorCommand}
+                onChange={this.onChange}
+                placeholder="What's on your mind?"
+                ref="editor"
+                spellCheck={true}
+              />
+            </div>
+          </div>
+          <div className="col-12 col-md-6">
+            lorsv-okokokk
+          </div>
         </div>
       </div>
     );

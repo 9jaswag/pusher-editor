@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'Pusher Realtime Editor',
   },
   plugins: ['gatsby-plugin-react-helmet'],
 }
