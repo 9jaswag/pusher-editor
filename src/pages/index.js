@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Link from 'gatsby-link'
-import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from 'draft-js';
+import { Editor, EditorState, RichUtils, getDefaultKeyBinding, convertToRaw, convertFromRaw, SelectionState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import Pusher from 'pusher-js';
 import axios from 'axios'
@@ -20,31 +20,52 @@ const styleMap = {
 class IndexPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
+    this.state = { editorState: EditorState.createEmpty(), text: '', };
     this.focus = () => this.refs.editor.focus();
-    this.onChange = (editorState) => this.setState({ editorState });
+    this.onChange = (editorState) => {
+      this.setState({ editorState }, () => {
+        this.notifyPusher(stateToHTML(this.state.editorState.getCurrentContent()));
+        this.notifyPusherEditor(this.state.editorState)
+      })
+    };
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
     this.getBlockStyle = this._getBlockStyle.bind(this);
+    this.notifyPusher = this._notifyPusher.bind(this);
+    this.notifyPusherEditor = this._notifyPusherEditor.bind(this);
   }
 
   componentWillMount() {
-    // this.pusher = new Pusher('YOUR PUSHER APP ID', {
-    //   authEndpoint: 'YOUR AUTH SERVER ENDPOINT',
-    //   cluster: 'YOUR APP CLUSTER',
-    //   encrypted: true
-    // });
+    this.pusher = new Pusher('YOUR PUSHER KEY', {
+      cluster: 'eu',
+      encrypted: true
+    });
 
-    // this.post_channel = this.pusher.subscribe('editor');
+    this.channel = this.pusher.subscribe('editor');
   }
 
   componentDidMount() {
-    // this.post_channel.bind('editor', (text) => {
-    //   console.log(text)
-    //   this.setState({ editorText: text })
-    // });
+    let self = this;
+    this.channel.bind('text-update', function (data) {
+      self.setState({ text: data.text })
+    });
+
+    this.channel.bind('editor-update', function (data) {
+      let newSelection = new SelectionState({
+        anchorKey: data.selection.anchorKey,
+        anchorOffset: data.selection.anchorOffset,
+        focusKey: data.selection.focusKey,
+        focusOffset: data.selection.focusOffset,
+      });
+      let editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(data.text)))
+      const newEditorState = EditorState.forceSelection(
+        editorState,
+        newSelection
+      );
+      self.setState({ editorState: newEditorState })
+    });
   }
 
   _getBlockStyle(block) {
@@ -93,6 +114,16 @@ class IndexPage extends Component {
     );
   }
 
+  _notifyPusher(text) {
+    axios.post('http://localhost:5000/save-text', { text })
+  }
+
+  _notifyPusherEditor(text) {
+    const selection = this.state.editorState.getSelection()
+    let rawText = convertToRaw(text.getCurrentContent())
+    axios.post('http://localhost:5000/editor-text', { text: JSON.stringify(rawText), selection })
+  }
+
   render() {
     const { editorState } = this.state;
     // If the user changes block type before entering any text, we can
@@ -132,7 +163,7 @@ class IndexPage extends Component {
             </div>
           </div>
           <div className="col-12 col-md-6">
-            <div dangerouslySetInnerHTML={{ __html: stateToHTML(this.state.editorState.getCurrentContent()) }} />
+            <div dangerouslySetInnerHTML={{ __html: this.state.text }} />
           </div>
         </div>
       </div>
