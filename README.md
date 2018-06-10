@@ -30,7 +30,7 @@ $ yarn install
 ```
 
 
-#### Setup up Figaro and Env variables
+#### Setup Env variables
 - Create a `.env` file in your root directory and add the following to it:
 ```
 PUSHER_APP_ID: 'your Pusher app ID'
