@@ -13,15 +13,21 @@ npm install --global gatsby-cli
 ```
 
 #### Clone The Repository
-`$ https://github.com/9jaswag/pusher-editor.git`
+```sh
+$ https://github.com/9jaswag/pusher-editor.git
+```
 
 
 #### Change directory
-`$ cd pusher-editor`
+```sh
+$ cd pusher-editor
+```
 
 
 #### Install dependencies
-`$ yarn install`
+```sh
+$ yarn install
+```
 
 
 #### Setup up Figaro and Env variables
@@ -36,6 +42,7 @@ PUSHER_APP_CLUSTER: 'your pusher cluster'
 
 #### Start the app
 - Open the app in two terminals, in one run `node server.js` and `gatsby develop` in the other.
+- Open http://localhost:8000/ in your browser to see the app
 
 
 Prerequisites
