@@ -59,11 +59,13 @@ class IndexPage extends Component {
         focusKey: data.selection.focusKey,
         focusOffset: data.selection.focusOffset,
       });
-      let editorState = EditorState.createWithContent(convertFromRaw(JSON.parse(data.text)))
+      let editorState = EditorState.createWithContent(convertFromRaw(data.text))
       const newEditorState = EditorState.forceSelection(
         editorState,
         newSelection
       );
+      // TODO: try setting state if only the person is not the one editing.
+      // try to solve for when the second person starts editing
       self.setState({ editorState: newEditorState })
     });
   }
@@ -118,10 +120,10 @@ class IndexPage extends Component {
     axios.post('http://localhost:5000/save-text', { text })
   }
 
-  _notifyPusherEditor(text) {
-    const selection = this.state.editorState.getSelection()
-    let rawText = convertToRaw(text.getCurrentContent())
-    axios.post('http://localhost:5000/editor-text', { text: JSON.stringify(rawText), selection })
+  _notifyPusherEditor(editorState) {
+    const selection = editorState.getSelection()
+    let text = convertToRaw(editorState.getCurrentContent())
+    axios.post('http://localhost:5000/editor-text', { text, selection })
   }
 
   render() {
