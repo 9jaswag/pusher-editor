@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Link from 'gatsby-link'
 import { Editor, EditorState, RichUtils, getDefaultKeyBinding, convertToRaw, convertFromRaw, SelectionState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import Pusher from 'pusher-js';
@@ -17,7 +16,7 @@ const styleMap = {
   },
 };
 
-class IndexPage extends Component {
+class RichEditor extends Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty(), text: '', };
@@ -173,4 +172,4 @@ class IndexPage extends Component {
   }
 }
 
-export default IndexPage
+export default RichEditor
