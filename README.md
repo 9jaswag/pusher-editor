@@ -3,6 +3,8 @@ Build a realtime collaborative editor with Gatsby, Draft.js and Pusher
 
 A tutorial to showcase realtime functionality of Pusher Channels in Gatsby
 
+[View Tutorial](https://pusher.com/tutorials/collaborative-editor-gatsby-draftjs)
+
 
 Getting Started
 ------
